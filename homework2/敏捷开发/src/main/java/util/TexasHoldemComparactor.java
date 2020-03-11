@@ -10,6 +10,13 @@ import java.util.*;
 
 /**
  * 手牌比较器
+ *
+ * 主要实现逻辑：
+ *  1. string -> 手牌等级
+ *  2. 若不相等则根据等级返回判断结果
+ *  3. 若相等则按手牌大小降序排序，权重变为字典序大小（ 字典序越大则手牌等级更高
+ *
+ *
  * @author czf
  * @Date 2020/3/11 7:32 下午
  */
@@ -28,14 +35,17 @@ public class TexasHoldemComparactor implements Comparator<String> {
             e.printStackTrace();
             System.out.println(e.getErrMsg());
         }
+        // 若不是同一等级
         if ( typeA.getPriority() != typeB.getPriority() )
             return typeA.getPriority() - typeB.getPriority();
+        // 是同一个等级，则比较手牌按大小逆序排序后的字典序大小
         return compare(  PokersA, PokersB );
     }
 
+    // 比较手牌按大小逆序排序后的字典序大小（实际上是对数组的比较，数组元素为手牌的权重
     int compare( List<TexasHoldem> pokersA, List<TexasHoldem> pokersB ){
-        List<Integer> codeA = cardDescSort(pokersA);
-        List<Integer> codeB = cardDescSort(pokersB);
+        List<Integer> codeA = cardSort(pokersA);
+        List<Integer> codeB = cardSort(pokersB);
         int i=codeA.size()-1;
         int j=codeB.size()-1;
         while(i>=0 && j>=0){
@@ -50,17 +60,20 @@ public class TexasHoldemComparactor implements Comparator<String> {
         return i>=0?1:-1;
     }
 
-    private List<Integer> cardDescSort(List<TexasHoldem> pokers) {
+    // 给手牌排序
+    private List<Integer> cardSort(List<TexasHoldem> pokers) {
         List<Integer> res = new ArrayList<>();
         for (Poker poker:pokers)
             res.add(THPriorityDecoder.decode.get(poker.getDigit()));
         Collections.sort(res);
         return res;
     }
-    
 
+
+    // 返回对应等级
     private THType checkType(List<TexasHoldem> pokersA) throws EmGameException {
         /**
+         * 主要逻辑：
          * 1. 排序
          * 2. 填充变量：
          *      1. 是否是同一种花色 (5张)
