@@ -57,6 +57,7 @@ public class TexasHoldemComparactor implements Comparator<String> {
         Collections.sort(res);
         return res;
     }
+    
 
     private THType checkType(List<TexasHoldem> pokersA) throws EmGameException {
         /**
