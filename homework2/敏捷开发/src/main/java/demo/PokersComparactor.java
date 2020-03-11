@@ -93,6 +93,7 @@ public class PokersComparactor {
          *      5. 有几个(四张相同大小的牌)
          * 3. 根据上面的信息，来以优先级递减的顺序判断类型
          */
+
         String [] cards = s.split(" ");
         if (cards.length<5) return "";
         // 根据大小排序
