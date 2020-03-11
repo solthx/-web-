@@ -28,7 +28,34 @@ public class TexasHoldemComparactor implements Comparator<String> {
             e.printStackTrace();
             System.out.println(e.getErrMsg());
         }
-        return typeA.getPriority() - typeB.getPriority();
+        if ( typeA.getPriority() != typeB.getPriority() )
+            return typeA.getPriority() - typeB.getPriority();
+        return compare(  PokersA, PokersB );
+    }
+
+    int compare( List<TexasHoldem> pokersA, List<TexasHoldem> pokersB ){
+        List<Integer> codeA = cardDescSort(pokersA);
+        List<Integer> codeB = cardDescSort(pokersB);
+        int i=codeA.size()-1;
+        int j=codeB.size()-1;
+        while(i>=0 && j>=0){
+            if ( codeA.get(i) == codeB.get(j) ){
+                --i;
+                --j;
+            }else if (codeA.get(i)>codeB.get(j))
+                return 1;
+            else return -1;
+        }
+        if (i<0 && j<0) return 0;
+        return i>=0?1:-1;
+    }
+
+    private List<Integer> cardDescSort(List<TexasHoldem> pokers) {
+        List<Integer> res = new ArrayList<>();
+        for (Poker poker:pokers)
+            res.add(THPriorityDecoder.decode.get(poker.getDigit()));
+        Collections.sort(res);
+        return res;
     }
 
     private THType checkType(List<TexasHoldem> pokersA) throws EmGameException {

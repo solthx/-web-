@@ -38,5 +38,32 @@ public class TexasHoldemComparactorTest {
         assert ( 0 > texasHoldemComparactor.compare(两对, 三条) );
         assert ( 0 > texasHoldemComparactor.compare(对子, 两对) );
         assert ( 0 > texasHoldemComparactor.compare(散牌, 对子) );
+
+        /**
+         * 题目的测试用例
+         * 输入: Black: 2H 3D 5S 9C KD White: 2C 3H 4S 8C AH 输出: White wins - high card: Ace
+         * 输入: Black: 2H 4S 4C 2D 4H White: 2S 8S AS QS 3S 输出: Black wins - full house
+         * 输入: Black: 2H 3D 5S 9C KD White: 2C 3H 4S 8C KH 输出: Black wins - high card: 9
+         * 输入: Black: 2H 3D 5S 9C KD White: 2D 3H 5C 9S KH 输出: Tie
+         */
+        String w1 = "2H 3D 5S 9C KD";
+        String b1 =  "2C 3H 4S 8C AH";
+
+        String w2 = "2H 4S 4C 2D 4H";
+        String b2 =  "2S 8S AS QS 3S";
+
+        String w3 = "2H 3D 5S 9C KD";
+        String b3 =  "2C 3H 4S 8C KH";
+
+        String w4 = "2H 3D 5S 9C KD";
+        String b4 =  "2D 3H 5C 9S KH";
+
+        //> < < ==
+        assert( 0 > texasHoldemComparactor.compare(w1, b1) );
+        assert( 0 < texasHoldemComparactor.compare(w2, b2) );
+        assert( 0 < texasHoldemComparactor.compare(w3, b3) );
+        assert( 0 == texasHoldemComparactor.compare(w4, b4) );
+
+
     }
 }
